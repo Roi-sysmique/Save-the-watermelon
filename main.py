@@ -9,6 +9,9 @@ SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("pygame")
 clock = pygame.time.Clock()
 BACKGROUND = pygame.surface.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+title = pygame.transform.rotozoom(pygame.image.load('Assets/title.png'), 0, 0.5)
+title_rect = title.get_rect(bottomright=(SCREEN_WIDTH-10, SCREEN_HEIGHT-10))
+title_y_position = 0
 
 
 class WaterMellon(pygame.sprite.Sprite):
@@ -16,7 +19,7 @@ class WaterMellon(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.angle = 0
-        self.original_image = pygame.image.load("Assets/Watermellon.png")
+        self.original_image = pygame.image.load("Assets/Watermelon.png")
         self.image = pygame.transform.rotozoom(self.original_image, self.angle, 0.5)
         self.rect = self.image.get_rect()
         self.rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT*2/3 + 10)
@@ -34,6 +37,13 @@ class WaterMellon(pygame.sprite.Sprite):
 
 player = WaterMellon()
 
+
+def title_animation():
+    global title_y_position
+    title_y_position += 0.04
+    title_rect.bottomright = (SCREEN_WIDTH-10 , (SCREEN_HEIGHT-10) + 10*math.sin(title_y_position))
+
+
 while True:
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
@@ -44,5 +54,7 @@ while True:
     player.update(keys)
     SCREEN.blit(BACKGROUND, (0, 0))
     SCREEN.blit(player.image, player.rect)
+    SCREEN.blit(title, title_rect)
     pygame.display.update()
+    title_animation()
     clock.tick(120)
