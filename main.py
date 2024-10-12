@@ -186,6 +186,7 @@ while True:
                     game_run = True
             elif start_game:
                 if event.key == pygame.K_RETURN:
+                    start_time = int(pygame.time.get_ticks() / 100)
                     game_run = True
                     start_game = False
     if lives <= 0:
